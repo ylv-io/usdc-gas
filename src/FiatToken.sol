@@ -6,7 +6,7 @@
 
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.6.2;
+pragma solidity >=0.6.2 <=0.9.0;
 
 /**
  * @dev Wrappers over Solidity's arithmetic operations with added overflow
@@ -178,8 +178,6 @@ library SafeMath {
 
 // File: @openzeppelin/contracts/token/ERC20/IERC20.sol
 
-pragma solidity ^0.6.0;
-
 /**
  * @dev Interface of the ERC20 standard as defined in the EIP.
  */
@@ -291,7 +289,6 @@ interface IERC20 {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 abstract contract AbstractFiatTokenV1 is IERC20 {
     function _approve(
@@ -331,7 +328,6 @@ abstract contract AbstractFiatTokenV1 is IERC20 {
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-pragma solidity 0.6.12;
 
 /**
  * @notice The Ownable contract has an owner address, and provides basic
@@ -422,7 +418,6 @@ contract Ownable {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @notice Base contract which allows children to implement an emergency stop
@@ -514,7 +509,6 @@ contract Pausable is Ownable {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @title Blacklistable Token
@@ -612,7 +606,6 @@ contract Blacklistable is Ownable {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @title FiatToken
@@ -956,7 +949,6 @@ contract FiatTokenV1 is AbstractFiatTokenV1, Ownable, Pausable, Blacklistable {
 
 // File: @openzeppelin/contracts/utils/Address.sol
 
-pragma solidity ^0.6.2;
 
 /**
  * @dev Collection of functions related to the address type
@@ -1140,7 +1132,6 @@ library Address {
 
 // File: @openzeppelin/contracts/token/ERC20/SafeERC20.sol
 
-pragma solidity ^0.6.0;
 
 /**
  * @title SafeERC20
@@ -1291,7 +1282,6 @@ library SafeERC20 {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 contract Rescuable is Ownable {
     using SafeERC20 for IERC20;
@@ -1368,7 +1358,6 @@ contract Rescuable is Ownable {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @title FiatTokenV1_1
@@ -1402,7 +1391,6 @@ contract FiatTokenV1_1 is FiatTokenV1, Rescuable {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 abstract contract AbstractFiatTokenV2 is AbstractFiatTokenV1 {
     function _increaseAllowance(
@@ -1443,7 +1431,6 @@ abstract contract AbstractFiatTokenV2 is AbstractFiatTokenV1 {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @title ECRecover
@@ -1518,7 +1505,6 @@ library ECRecover {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @title EIP712
@@ -1604,7 +1590,6 @@ library EIP712 {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @title EIP712 Domain
@@ -1640,7 +1625,6 @@ contract EIP712Domain {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @title EIP-3009
@@ -1837,10 +1821,10 @@ abstract contract EIP3009 is AbstractFiatTokenV2, EIP712Domain {
         uint256 validBefore
     ) private view {
         require(
-            now > validAfter,
+            block.timestamp > validAfter,
             "FiatTokenV2: authorization is not yet valid"
         );
-        require(now < validBefore, "FiatTokenV2: authorization is expired");
+        require(block.timestamp < validBefore, "FiatTokenV2: authorization is expired");
         _requireUnusedAuthorization(authorizer, nonce);
     }
 
@@ -1881,7 +1865,6 @@ abstract contract EIP3009 is AbstractFiatTokenV2, EIP712Domain {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @title EIP-2612
@@ -1922,7 +1905,7 @@ abstract contract EIP2612 is AbstractFiatTokenV2, EIP712Domain {
         bytes32 r,
         bytes32 s
     ) internal {
-        require(deadline >= now, "FiatTokenV2: permit is expired");
+        require(deadline >= block.timestamp, "FiatTokenV2: permit is expired");
 
         bytes memory data = abi.encode(
             PERMIT_TYPEHASH,
@@ -1965,13 +1948,13 @@ abstract contract EIP2612 is AbstractFiatTokenV2, EIP712Domain {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 /**
  * @title FiatToken V2
  * @notice ERC20 Token backed by fiat reserves, version 2
  */
 contract FiatTokenV2 is FiatTokenV1_1, EIP3009, EIP2612 {
+    using SafeMath for uint256;
     uint8 internal _initializedVersion;
 
     /**
@@ -2195,7 +2178,6 @@ contract FiatTokenV2 is FiatTokenV1_1, EIP3009, EIP2612 {
  * SOFTWARE.
  */
 
-pragma solidity 0.6.12;
 
 // solhint-disable func-name-mixedcase
 
