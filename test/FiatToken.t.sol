@@ -48,6 +48,9 @@ contract USDCTest is Test {
         proxy.configureMinter(alice, 9000000);
 
         vm.prank(alice);
+        proxy.approve(frank, 1);
+
+        vm.prank(alice);
         proxy.mint(alice, 1000000);
 
         vm.prank(alice);
@@ -61,6 +64,25 @@ contract USDCTest is Test {
 
         assertEq(proxy.balanceOf(alice), 0);
         assertEq(proxy.balanceOf(bob), 1000000);
+    }
+
+    function testApprove() public {
+        vm.prank(alice);
+        proxy.approve(bob, 3);
+
+        assertEq(proxy.allowance(alice, bob), 3);
+    }
+
+    function testApproveHot() public {
+        vm.prank(alice);
+        proxy.approve(frank, 3);
+
+        assertEq(proxy.allowance(alice, frank), 3);
+    }
+
+    function testBalanceOf() public {
+        vm.prank(alice);
+        proxy.balanceOf(frank);
     }
 
     function testTransferToNonEmptyAccount() public {
